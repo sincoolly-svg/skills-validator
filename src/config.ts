@@ -109,7 +109,7 @@ export async function loadConfig(configPath?: string): Promise<ValidatorConfig> 
     const possiblePaths = [
       path.join(process.cwd(), 'data', 'config', 'skills-validator.config.json'),
       path.join(process.cwd(), '..', 'data', 'config', 'skills-validator.config.json'),
-      'D:\\OpenClawData\\shared\\projects\\validator-skills\\data\\config\\skills-validator.config.json',
+      path.join(process.cwd(), 'data', 'config', 'container-config.json'),
       '/data/skills-validator/config/skills-validator.config.json'
     ];
     
