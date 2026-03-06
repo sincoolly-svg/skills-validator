@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["lastUpdated", "skills"],
+  "properties": {
+    "lastUpdated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last time the index was updated"
+    },
+    "lastScanStartedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when last scan started"
+    },
+    "lastScanCompletedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when last scan completed"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "lastSyncedAt"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "repo": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "skillsRoot": {
+            "type": "string"
+          },
+          "lastSyncedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "localPath": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "sourceRepo", "path", "firstSeenAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Skill directory name"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Human-readable display name"
+          },
+          "sourceRepo": {
+            "type": "string",
+            "description": "Source repository URL or path"
+          },
+          "sourceName": {
+            "type": "string",
+            "description": "Name of the source configuration"
+          },
+          "path": {
+            "type": "string",
+            "description": "Full path to skill directory"
+          },
+          "version": {
+            "type": "string",
+            "description": "Detected version string"
+          },
+          "versionFrom": {
+            "type": "string",
+            "enum": ["git-tag", "manifest", "package-json", "unknown"],
+            "description": "Source of version detection"
+          },
+          "firstSeenAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When skill was first discovered"
+          },
+          "lastCheckedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Last validation timestamp"
+          },
+          "lastStatus": {
+            "type": "string",
+            "enum": ["PASSED", "FAILED", "PARTIAL", "MANUAL_REVIEW_REQUIRED", "PENDING", "SKIPPED"],
+            "description": "Latest validation status"
+          },
+          "lastReportFile": {
+            "type": "string",
+            "description": "Path to latest JSON report"
+          },
+          "consecutiveFailures": {
+            "type": "integer",
+            "default": 0,
+            "minimum": 0
+          },
+          "totalChecks": {
+            "type": "integer",
+            "default": 0,
+            "minimum": 0
+          },
+          "manifest": {
+            "type": "object",
+            "properties": {
+              "exists": {
+                "type": "boolean"
+              },
+              "valid": {
+                "type": "boolean"
+              },
+              "path": {
+                "type": "string"
+              },
+              "error": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

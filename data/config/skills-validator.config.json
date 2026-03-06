@@ -1,0 +1,35 @@
+{
+  "$schema": "./schemas/config.schema.json",
+  "version": "1.0.0",
+  "sources": [
+    {
+      "type": "local-dir",
+      "name": "openclaw-skills-local",
+      "path": "D:\\OpenClawData\\shared\\projects\\validator-skills\\data\\cache\\openclaw-skills\\skills\\skills"
+    }
+  ],
+  "schedule": {
+    "enabled": true,
+    "times": ["09:00", "15:00", "21:00"],
+    "timezone": "Asia/Shanghai"
+  },
+  "storage": {
+    "baseDir": "D:\\OpenClawData\\shared\\projects\\validator-skills\\data",
+    "skillsIndexFile": "skills-index.json",
+    "reportsDir": "reports",
+    "logsDir": "logs",
+    "tempDir": "temp",
+    "cacheDir": "cache"
+  },
+  "execution": {
+    "maxParallelValidations": 2,
+    "timeoutPerSkillMinutes": 30,
+    "gitCloneDepth": 1
+  },
+  "notification": {
+    "enabled": false,
+    "onNewSkill": false,
+    "onValidationComplete": true,
+    "channels": []
+  }
+}

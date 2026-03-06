@@ -1,0 +1,23 @@
+[Command] npm init -y
+[Exit Code] 0
+[Stdout]
+Wrote to /shared/projects/validator-skills/data/temp/weather-skill/package.json:
+
+{
+  "name": "weather-skill",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+
+
+
+
+[Stderr]
+

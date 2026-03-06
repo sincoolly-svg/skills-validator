@@ -1,0 +1,13 @@
+=== Skill 功能验证 ===
+Skill: weather-skill
+功能描述: 获取天气信息的 Skill - 使用 wttr.in API
+Skill 类型: node
+验证方法: command
+测试输入: N/A
+测试输出: N/A
+=== 标准输出 ===
+
+=== 标准错误 ===
+spawn /bin/bash ENOENT
+=== 退出码 ===
+1
