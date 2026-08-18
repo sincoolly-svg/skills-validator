@@ -1,68 +1,64 @@
-# Skills Validator 🔍
+# Skills Validator
 
-自动发现、部署并验证 GitHub 上的 OpenClaw Skills，生成详细的测评报告。
+Static safety checks for AI agent skill repositories.
 
-## 功能
+Skills Validator reads a local directory or a public GitHub repository and reports patterns that deserve review before a skill is trusted. It does not run files from the target, install target dependencies, invoke package scripts, or pass the target the caller's full environment.
 
-- **扫描发现**：从 GitHub 源自动扫描 Skills
-- **自动部署**：一键部署 Skill 到本地
-- **功能测评**：实际调用 Skill 验证功能是否可用
-- **报告生成**：生成详细的测评报告
+## MVP scope
 
-## 安装
+- Validates `SKILL.md` frontmatter with `name` and `description`.
+- Checks source, shell, JSON, and configuration files as text.
+- Reports download-and-execute pipelines, destructive commands, path traversal writes, sensitive credential paths, sensitive environment reads, environment-value network exfiltration, dependency installation commands, and invalid JSON configuration.
+- Emits terminal text, Markdown, or JSON.
+- Scans local directories and canonical public GitHub repository URLs.
+- Uses stable exit codes: `0` clean, `1` findings, `2` invalid input or scanner error.
+
+This is a static signal, not a sandbox and not a guarantee that a skill is safe. Review findings and the skill's purpose before use. Runtime isolation, SARIF, more skill formats, and dependency vulnerability databases are planned for later releases.
+
+## Quick start
+
+Requirements: Node.js 20 or newer and Git for public repository scans.
 
 ```bash
-npx clawhub@latest install skills-validator
+npm install
+npm run build
+
+# Scan a local skill
+node dist/index.js scan ./fixtures/safe-skill
+
+# Scan a public repository
+node dist/index.js scan https://github.com/owner/repository --format markdown --output report.md
 ```
 
-## 使用方法
+The command never writes into the target. A GitHub checkout is shallow, temporary, and removed after the report is produced.
+
+## GitHub Actions
+
+The repository includes a CI workflow and a composite action. To use the action from a checked-out copy:
+
+```yaml
+- uses: sincoolly-svg/skills-validator@master
+  with:
+    target: ./skills/my-skill
+    format: markdown
+```
+
+Pin an immutable release or commit in production workflows. Findings return exit code `1`, so the workflow fails until the review is completed.
+
+## Development
 
 ```bash
-# 测评 GitHub 上的 Skill
-node dist/index.js https://github.com/owner/repo
-
-# 测评本地 Skill
-node dist/index.js /path/to/skill
-
-# 测评 ClawHub 上的 Skill（需要先下载）
-curl -L "https://wry-manatee-359.convex.site/api/v1/download?slug=<skill-name>" -o skill.zip
-unzip skill.zip
-node dist/index.js ./skill
+npm test
+npm run build
+npm run check
 ```
 
-## 测评流程
+The test suite uses temporary fixtures and verifies that scanner input is never executed. The `fixtures/unsafe-skill` directory is intentionally unsafe and is only used by tests; do not use it as a skill.
 
-1. 解析 Skill 的 SKILL.md 获取元数据
-2. 检查所需依赖是否已安装
-3. 尝试执行使用示例
-4. 验证输出结果
-5. 生成测评报告
+## Security boundary
 
-## 报告示例
+The scanner follows symlinks neither into nor out of the target and ignores `.git`, `node_modules`, and `dist`. It skips files whose names begin with `.env` and never includes file contents or environment values in reports. Static matching can miss obfuscated or runtime-only behavior; treat a clean report as one review signal, not approval.
 
-```
-# Skill 验证报告 - example-skill
-验证时间：2026/3/6 12:00:00
+## License
 
-## 基本信息
-- 名称：example-skill
-- 版本：1.0.0
-- 描述：Skill 描述
-
-## 验证步骤
-- 验证方法：功能测试（实际调用 skill）
-- 测试输入：skill --help
-- 测试输出：帮助信息
-
-## 结论
-- 总体结论：✅ PASSED
-```
-
-## 技术栈
-
-- Node.js >= 18
-- TypeScript
-
-## 开源协议
-
-MIT
+MIT. See [LICENSE](LICENSE).

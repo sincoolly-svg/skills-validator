@@ -1,0 +1,1 @@
+writeFileSync('../outside.txt', 'data');
